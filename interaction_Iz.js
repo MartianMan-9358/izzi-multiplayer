@@ -208,10 +208,17 @@ function handleMouseUp(pos) {
     me.releaseTile();
 
     if (!snapped) {
-        tile.x = finalX;
-        tile.y = finalY;
-        resolveGlobalCollisions(tileArrALL, 2);
-        updateRemoteTile(tile);
+      tile.x = finalX;
+      tile.y = finalY;
+      resolveGlobalCollisions(tileArrALL, 2);
+      //updateRemoteTile(tile);    
+      tileArrALL.forEach(t => {
+        // Only update tiles that aren't locked on the board
+        if (!t.isPlaced) {
+          updateRemoteTile(t);
+        }
+    });
+        
     } else {
         // Snapped tiles don't need X/Y updates; the board listener handles placement.
         db.ref(`game/tiles/${tile.id}`).update({
