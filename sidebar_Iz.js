@@ -20,6 +20,9 @@ function setupSidebarUI() {
     const btnClear        = document.getElementById("btnClear");
     const solutionOnlyChk = document.getElementById("solutionOnly"); // may be null for now
 
+    const btnNuke = document.getElementById("btnNuke");
+    
+
     // 1. Non-hosts: hide sidebar + toggle and bail out
     if (!isHost()) {
         if (menuToggle) menuToggle.classList.add("hidden");
@@ -81,6 +84,15 @@ function setupSidebarUI() {
             resetCurrentBoard();
         });
     }
+
+    if (btnNuke) {
+        btnNuke.addEventListener("click", () => {
+            // Use the function you just added to state_Iz.js
+            nukeDatabase();
+        });
+    }
+
+
 }
 
 

@@ -287,3 +287,14 @@ window.debugCloudSync = async function() {
   console.log(cloud);
   console.groupEnd();
 };
+
+/**
+ * DANGER: This wipes the entire game state for everyone instantly.
+ */
+function nukeDatabase() {
+  if (!confirm("Are you sure you want to WIPE the entire database?")) return;
+
+  db.ref("game").set(null)
+    .then(() => console.log("--- DATABASE WIPED ---"))
+    .catch(err => console.error("Wipe failed:", err));
+}
