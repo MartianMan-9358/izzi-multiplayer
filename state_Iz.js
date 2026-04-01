@@ -193,13 +193,19 @@ function initBoardListeners() {
         const [r, c] = snapshot.key.split('_').map(Number);
         const data = snapshot.val();
 
-        // FIX: If this is a removal event OR the data is null, 
-        // force the local board to clear the cell.
         if (isRemoval || data === null || !data.tileId) {
             gameBoard.removeTile(r, c);
         } else {
             const tile = tileArrALL.find(t => t.id === data.tileId);
-            if (tile) gameBoard.placeTile(tile, r, c);
+            if (tile) {
+                gameBoard.placeTile(tile, r, c);
+                
+                // --- THE FIX STARTS HERE ---
+                // Sync the rotation and the matching 'value' so the solver sees it
+                tile.rotation = data.rotation ?? tile.rotation;
+                tile.value = ROT[tile.initialValue * 4 + tile.rotation];
+                // --- THE FIX ENDS HERE ---
+            }
         }
 
         if (isHost()) {
@@ -210,7 +216,6 @@ function initBoardListeners() {
 
     boardRef.on('child_added', (snap) => syncCell(snap, false));
     boardRef.on('child_changed', (snap) => syncCell(snap, false));
-    // Pass 'true' to force the removal logic
     boardRef.on('child_removed', (snap) => syncCell(snap, true)); 
 }
 

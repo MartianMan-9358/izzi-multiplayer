@@ -247,6 +247,12 @@ function handleRotate(pos) {
     // If this tile is on the board, the board listener will trigger the Win-Check.
     selectedTile.rotateClockwise();
     updateRemoteTile(selectedTile);
+    if (selectedTile.isPlaced) {
+        db.ref(`game/board/cells/${selectedTile.boardRow}_${selectedTile.boardCol}`).update({
+            rotation: selectedTile.rotation,
+            lastUpdated: Date.now() 
+        });
+    }
 }
 
 // TOUCH helpers
