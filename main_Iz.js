@@ -14,32 +14,40 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Load Visual Assets
     spriteSheet.src = "tileSpriteSheet6small.png";
     spriteSheet.onload = () => {
-        console.log("Assets loaded. Initializing systems...");
+    console.log("Assets loaded. Waiting for Firebase Auth...");
 
-        // Initialize the math tables (ROT/EDGE_VAL) for win-checking [0.32]
-        if (!ROT_INIT) initRotTable();
+    if (!ROT_INIT) initRotTable();
 
-        // Register the local player with a unique ID and random color [0.20, 0.24]
-        const uid = "p_" + Math.random().toString(36).slice(2, 10);
-        const colors = ["yellow", "cyan", "magenta", "lime", "orange", "white", "pink", "aqua"];
-        const myColor = colors[Math.floor(Math.random() * colors.length)];
-        PlayerManager.initLocalPlayer(uid, "Player " + uid.slice(-3), myColor);
+    // 1. Ask Firebase for an anonymous session
+    firebase.auth().signInAnonymously()
+        .then((userCredential) => {
+            // 2. Get the REAL UID from Firebase (e.g., "qX9j...")
+            const uid = userCredential.user.uid; 
+            console.log("Secure Session Active:", uid);
 
-        // Wipe cursor from cloud if player leaves/refreshes [0.20]
-        db.ref(`game/players/${uid}`).onDisconnect().remove();
+            const colors = ["yellow", "cyan", "magenta", "lime", "orange", "white", "pink", "aqua"];
+            const myColor = colors[Math.floor(Math.random() * colors.length)];
 
-        // 3. Start Data Flow: Listeners must start BEFORE the game loop [0.21, 0.39]
-        initMetadataListener();
-        initTileListeners();
-        initPlayerListeners();
-        initBoardListeners();
+            // 3. Initialize player using the Firebase UID
+            PlayerManager.initLocalPlayer(uid, "Player " + uid.slice(-3), myColor);
 
-        // Setup the input layer (mousedown, etc.) [0.13]
-        setupInteraction();
+            // 4. Setup Cloud Cleanup
+            db.ref(`game/players/${uid}`).onDisconnect().remove();
 
-        // 4. Start Rendering
-        requestAnimationFrame(gameLoop);
-    };
+            // 5. Start Listeners & Interaction AFTER auth is confirmed
+            initMetadataListener();
+            initTileListeners();
+            initPlayerListeners();
+            initBoardListeners();
+            setupInteraction();
+
+            // 6. Start the Loop
+            requestAnimationFrame(gameLoop);
+        })
+        .catch(err => {
+            console.error("Firebase Auth failed! Check your Config or Console.", err);
+        });
+};
 
     // Initialize the Sidebar UI [0.21, 0.25]
     setupSidebarUI();

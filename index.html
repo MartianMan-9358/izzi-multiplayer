@@ -64,7 +64,11 @@
 
 
 <!-- Firebase v12 COMPAT SDKs (required for firebase.database()) -->
+
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-database-compat.js"></script>
 
 <script>
@@ -80,13 +84,13 @@
     measurementId: "G-MFZX28D81R"
   };
 
-  // Initialize Firebase (compat mode)
+  // 1. Initialize the App
   firebase.initializeApp(firebaseConfig);
-
-  // This is what your entire codebase expects
+  
+  // 2. Set the global Database reference
   window.db = firebase.database(); 
 
-  // Keep your debug toggle if you like
+  // 3. Keep your debug toggle
   window.IZZI_DEBUG = true; 
 </script>
 
