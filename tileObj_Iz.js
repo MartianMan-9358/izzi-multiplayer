@@ -87,8 +87,8 @@ class TileObj {
     
     draw(ctx, img) {
         const columns = 10;
-        const sx = (this.tileIndex % columns) * TILE_SIZE; 
-        const sy = Math.floor(this.tileIndex / columns) * TILE_SIZE;
+        const sx = (this.tileIndex % columns) * SOURCE_TILE_SIZE; 
+        const sy = Math.floor(this.tileIndex / columns) * SOURCE_TILE_SIZE;
     
         ctx.save();
         // Move to the logical CENTER for rotation
@@ -99,7 +99,7 @@ class TileObj {
         // This makes the logical this.x/y the visual top-left
         ctx.drawImage(
             img,
-            sx, sy, TILE_SIZE, TILE_SIZE,
+            sx, sy, SOURCE_TILE_SIZE, SOURCE_TILE_SIZE,
             -this.width / 2, -this.height / 2, 
             this.width, this.height
         );
