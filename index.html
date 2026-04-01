@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzi Multiplayer | RTDB Engine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<!-- index.html -->
+<body>
+    <!-- 1. The Hamburger Button (Hidden by default, shown for Host) -->
+    <div id="menu-toggle" class="hidden">☰</div>
+
+    <div class="app-container">
+        <!-- 2. The Sidebar (Off-canvas) -->
+        <aside id="sidebar" class="sidebar">
+            <div id="close-sidebar">×</div>
+            <header>
+                <h2>Host Settings</h2>
+            </header>
+
+            <section id="host-controls">
+                <div class="control-group">
+                    <label>Grid Size</label>
+                    <div class="input-row">
+                        <input type="number" id="inputRows" value="8" min="1" max="12">
+                        <span>×</span>
+                        <input type="number" id="inputCols" value="8" min="1" max="12">
+                    </div>
+                </div>
+            
+                <div class="control-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="allowExcluded">
+                        Allow Excluded (X) Tiles
+                    </label>
+                </div>
+            
+                <div class="control-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="solutionOnly">
+                        Solution Tiles Only
+                    </label>
+                </div>
+            
+                <div class="button-stack">
+                    <button id="btnBuild" class="btn-primary">Build New Board</button>
+                    <button id="btnClear" class="btn-danger">Reset Current Board</button>
+                </div>
+            </section>
+                </div>
+            </section>
+
+        </aside>
+
+        <!-- 3. Main Viewport -->
+        <main class="game-viewport">
+            <canvas id="gameCanvas"></canvas>
+            <div id="win-overlay" class="hidden">
+                <h2>PUZZLE SOLVED!</h2>
+            </div>
+        </main>
+    </div>
+
+
+<!-- Firebase v12 COMPAT SDKs (required for firebase.database()) -->
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-database-compat.js"></script>
+
+<script>
+  // Your unique config from the "Add Firebase to your web app" screen
+  const firebaseConfig = {
+    apiKey: "AIzaSyDw4ZJXhw7IGDoSLtRM0WuRBOMSDFI6pGw",
+    authDomain: "tile-puzzle-multiplayer.firebaseapp.com",
+    databaseURL: "https://tile-puzzle-multiplayer-default-rtdb.firebaseio.com/",
+    projectId: "tile-puzzle-multiplayer",
+    storageBucket: "tile-puzzle-multiplayer.firebasestorage.app",
+    messagingSenderId: "211490521410",
+    appId: "1:211490521410:web:77d6e8937446050a7f48db",
+    measurementId: "G-MFZX28D81R"
+  };
+
+  // Initialize Firebase (compat mode)
+  firebase.initializeApp(firebaseConfig);
+
+  // This is what your entire codebase expects
+  window.db = firebase.database(); 
+
+  // Keep your debug toggle if you like
+  window.IZZI_DEBUG = true; 
+</script>
+
+
+
+
+    <script src="varsGlobal_Iz.js"></script>
+
+    <script src="draw_Iz.js"></script>
+    <script src="math_Iz.js"></script>
+    <script src="solver_Iz.js"></script>
+    <script src="tileObj_Iz.js"></script>
+    <script src="boardObj_Iz.js"></script>
+
+    <script src="player_Iz.js"></script>
+    <script src="interaction_Iz.js"></script>
+    <script src="state_Iz.js"></script>
+    <script src="sidebar_Iz.js"></script>
+
+    <script src="main_Iz.js"></script>
+</body>
+
+</html>
